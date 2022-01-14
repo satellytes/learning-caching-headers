@@ -1,0 +1,69 @@
+service: learning-caching-headers
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: "us-east-1"
+  logRetentionInDays: 14
+
+package:
+  patterns:
+    - '!*/**'
+    - handler.js
+# replace ukt4w8cmx1 with ApiGatewayRestApi variable or however the name is
+resources:
+  Description: "CloudFormation template for ${self:service}"
+  Resources:
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - Id: ApiGateway
+              DomainName:
+                Fn::Join:
+                  - ""
+                  - - "ukt4w8cmx1.execute-api."
+                    - Ref: AWS::Region
+                    - ".amazonaws.com"
+              CustomOriginConfig:
+                HTTPPort: '80'
+                HTTPSPort: '443'
+                OriginProtocolPolicy: https-only
+                OriginSSLProtocols: [ "TLSv1", "TLSv1.1", "TLSv1.2" ]
+          Enabled: 'true'
+          HttpVersion: http2
+          IPV6Enabled: true
+          DefaultCacheBehavior:
+            Compress: 'true'
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            TargetOriginId: ApiGateway
+            ViewerProtocolPolicy: redirect-to-https
+          PriceClass: PriceClass_100
+          CustomErrorResponses:
+            - ErrorCode: 403
+              ResponseCode: 404
+              ResponsePagePath: "/404.html"
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: true
+  Outputs:
+    ApiDistribution:
+      Value:
+        Fn::GetAtt: [ CloudFrontDistribution, DomainName ]
+
+functions:
+  hello:
+    handler: handler.hello
+    memorySize: 128
+    events:
+      - httpApi:
+          path: /
+          method: get

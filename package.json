@@ -1,0 +1,16 @@
+{
+  "name": "learning-caching-headers",
+  "version": "1.0.0",
+  "description": "Learning `cache-control` headers with serverless, AWS Lambda and AWS Cloudfront.",
+  "main": "handler.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "package": "serverless package",
+    "deploy": "serverless deploy",
+    "doctor": "serverless doctor"
+  },
+  "devDependencies": {
+    "serverless": "^3.0.0-pre.4634c814"
+  }
+}
