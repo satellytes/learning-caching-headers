@@ -9,7 +9,7 @@ yarn
 yarn deploy
 ```
 
-> First deploy can take very long (around 5 minutes) as we need to wait for CloudFront to instanciate
+> First deploy can take very long (around 5 minutes) as we need to wait for CloudFront to instantiate
 
 ## Architecture
 
