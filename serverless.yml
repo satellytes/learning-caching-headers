@@ -6,15 +6,24 @@ provider:
   runtime: nodejs12.x
   region: "us-east-1"
   logRetentionInDays: 14
+  apiGateway:
+    restApiId:
+      'Fn::ImportValue': MyApiGateway-restApiId
+    restApiRootResourceId:
+      'Fn::ImportValue': MyApiGateway-rootResourceId
 
 package:
   patterns:
     - '!*/**'
     - handler.js
-# replace ukt4w8cmx1 with ApiGatewayRestApi variable or however the name is
+
 resources:
   Description: "CloudFormation template for ${self:service}"
   Resources:
+    MyApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ApiGatewayRestApiName
     CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -23,10 +32,11 @@ resources:
             - Id: ApiGateway
               DomainName:
                 Fn::Join:
-                  - ""
-                  - - "ukt4w8cmx1.execute-api."
+                  - "."
+                  - - Ref: MyApiGatewayRestApi
+                    - execute-api
                     - Ref: AWS::Region
-                    - ".amazonaws.com"
+                    - amazonaws.com
               CustomOriginConfig:
                 HTTPPort: '80'
                 HTTPSPort: '443'
@@ -58,12 +68,24 @@ resources:
     ApiDistribution:
       Value:
         Fn::GetAtt: [ CloudFrontDistribution, DomainName ]
+    apiGatewayRestApiId:
+      Value:
+        Ref: MyApiGatewayRestApi
+      Export:
+        Name: MyApiGateway-restApiId
+    apiGatewayRestApiRootResourceId:
+      Value:
+        Fn::GetAtt:
+          - MyApiGatewayRestApi
+          - RootResourceId
+      Export:
+        Name: MyApiGateway-rootResourceId
 
 functions:
   hello:
     handler: handler.hello
     memorySize: 128
     events:
-      - httpApi:
+      - http:
           path: /
-          method: get
+          method: GET

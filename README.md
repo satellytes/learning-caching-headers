@@ -35,3 +35,4 @@ also want to introduce S3 for your static files then.
 
 - https://developer.mozilla.org/de/docs/Web/HTTP/Headers/Cache-Control
 - https://www.youtube.com/watch?v=bfLFHp7Sbkg
+- https://github.com/Droplr/serverless-api-cloudfront

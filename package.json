@@ -8,6 +8,7 @@
   "scripts": {
     "package": "serverless package",
     "deploy": "serverless deploy",
+    "deploy:remove": "serverless remove",
     "doctor": "serverless doctor"
   },
   "devDependencies": {
