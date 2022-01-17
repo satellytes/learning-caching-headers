@@ -8,16 +8,16 @@ Learning `cache-control` headers with serverless, AWS Lambda and AWS Cloudfront.
 # install dependencies
 yarn
 
-# deploy function (make sure AWS CLI is setup)
+# deploy function to AWS (make sure AWS CLI is setup)
 yarn deploy
 
 # stream the logs of the function
 yarn logs
 
-# only deploy function code (faster then full deployment)
+# only deploy function code (faster then full function deployment)
 yarn deploy:function
 
-# remove everything you've deployed
+# remove function from AWS
 yarn deploy:remove
 ```
 
