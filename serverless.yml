@@ -3,14 +3,10 @@ frameworkVersion: '3'
 
 provider:
   name: aws
+  stage: prod
   runtime: nodejs12.x
   region: "us-east-1"
   logRetentionInDays: 14
-  apiGateway:
-    restApiId:
-      'Fn::ImportValue': MyApiGateway-restApiId
-    restApiRootResourceId:
-      'Fn::ImportValue': MyApiGateway-rootResourceId
 
 package:
   patterns:
@@ -20,10 +16,6 @@ package:
 resources:
   Description: "CloudFormation template for ${self:service}"
   Resources:
-    MyApiGatewayRestApi:
-      Type: AWS::ApiGateway::RestApi
-      Properties:
-        Name: ApiGatewayRestApiName
     CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -33,7 +25,7 @@ resources:
               DomainName:
                 Fn::Join:
                   - "."
-                  - - Ref: MyApiGatewayRestApi
+                  - - Ref: ApiGatewayRestApi
                     - execute-api
                     - Ref: AWS::Region
                     - amazonaws.com
@@ -68,18 +60,6 @@ resources:
     ApiDistribution:
       Value:
         Fn::GetAtt: [ CloudFrontDistribution, DomainName ]
-    apiGatewayRestApiId:
-      Value:
-        Ref: MyApiGatewayRestApi
-      Export:
-        Name: MyApiGateway-restApiId
-    apiGatewayRestApiRootResourceId:
-      Value:
-        Fn::GetAtt:
-          - MyApiGatewayRestApi
-          - RootResourceId
-      Export:
-        Name: MyApiGateway-rootResourceId
 
 functions:
   hello:
