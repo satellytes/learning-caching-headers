@@ -25,10 +25,10 @@ resources:
               DomainName:
                 Fn::Join:
                   - "."
-                  - - Ref: ApiGatewayRestApi
+                  - - Ref: HttpApi
                     - execute-api
                     - Ref: AWS::Region
-                    - amazonaws.com
+                    - Ref: AWS::URLSuffix
               CustomOriginConfig:
                 HTTPPort: '80'
                 HTTPSPort: '443'
@@ -66,6 +66,6 @@ functions:
     handler: handler.hello
     memorySize: 128
     events:
-      - http:
+      - httpApi:
           path: /
           method: GET
