@@ -8,6 +8,9 @@ provider:
   region: "us-east-1"
   logRetentionInDays: 14
 
+plugins:
+  - serverless-plugin-typescript
+
 package:
   patterns:
     - '!*/**'

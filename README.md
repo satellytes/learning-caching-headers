@@ -4,9 +4,21 @@ Learning `cache-control` headers with serverless, AWS Lambda and AWS Cloudfront.
 
 ## Usage
 
-```
+```bash
+# install dependencies
 yarn
+
+# deploy function (make sure AWS CLI is setup)
 yarn deploy
+
+# stream the logs of the function
+yarn logs
+
+# only deploy function code (faster then full deployment)
+yarn deploy:function
+
+# remove everything you've deployed
+yarn deploy:remove
 ```
 
 > First deploy can take very long (around 5 minutes) as we need to wait for CloudFront to instantiate

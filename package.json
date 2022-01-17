@@ -8,10 +8,14 @@
   "scripts": {
     "package": "serverless package",
     "deploy": "serverless deploy",
+    "deploy:function": "serverless deploy function --function hello",
     "deploy:remove": "serverless remove",
-    "doctor": "serverless doctor"
+    "logs": "serverless logs --function hello --tail"
   },
   "devDependencies": {
-    "serverless": "^3.0.0-pre.4634c814"
+    "@types/aws-lambda": "^8.10.89",
+    "serverless": "^3.0.0-pre.4634c814",
+    "serverless-plugin-typescript": "^2.1.0",
+    "typescript": "^4.5.4"
   }
 }
