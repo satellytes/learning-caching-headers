@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    const fetchData = () => {
+        fetch('https://d1pwwl7bh7hoa3.cloudfront.net')
+            .then(response => {
+                document.getElementById('cache-control-header').innerText = `Cache-Control Header: ${response.headers.get('cache-control')}`;
+                return response.json()})
+            .then(result => {
+                document.getElementById('date').innerText = `Origin date: ${result.createdDate}`;
+
+                const seconds = (new Date() - new Date(result.createdDate)) / 1000;
+                document.getElementById('seconds').innerText = `In CDN cache (s-maxage) since: ${seconds} sec.`;
+            });
+    }
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>Fetch from CloudFront</title>
+</head>
+<body>
+<h1>Fetch from CloudFront</h1>
+<p id ="cache-control-header">Cache-Control Header: -</p>
+<p id ="date">Origin date: -</p>
+<p id ="seconds">In CDN cache (s-maxage) since: -</p>
+<button onclick="fetchData()">Fetch data</button>
+</body>
+</html>

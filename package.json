@@ -10,7 +10,9 @@
     "deploy": "serverless deploy",
     "deploy:function": "serverless deploy function --function hello",
     "deploy:remove": "serverless remove",
-    "logs": "serverless logs --function hello --tail"
+    "deploy:info": "serverless info --verbose",
+    "logs": "serverless logs --function hello --tail",
+    "invalidate:cdn": "aws cloudfront create-invalidation --distribution-id EGXZDT85IU9EY --paths \"/*\""
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.89",

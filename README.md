@@ -17,6 +17,12 @@ yarn logs
 # only deploy function code (faster then full function deployment)
 yarn deploy:function
 
+# print lambda and cloudfront url
+yarn deploy:info
+
+# invalidate cloudfront (replace the distribution id with yours)
+yarn invalidate:cdn
+
 # remove function from AWS
 yarn deploy:remove
 ```
@@ -42,6 +48,11 @@ Serverless Node Function
 
 We can also use this setup to host a website. Depending on the framework and techniques you might
 also want to introduce S3 for your static files then.
+
+## Caching
+
+- `stale-while-revalidate`: not supported by CloudFront
+  - Very old post on AWS forums: https://forums.aws.amazon.com/thread.jspa?threadID=161496
 
 ## Resources
 

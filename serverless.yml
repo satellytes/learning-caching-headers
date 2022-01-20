@@ -66,7 +66,7 @@ resources:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: handler.handleRequest
     memorySize: 128
     events:
       - httpApi:
