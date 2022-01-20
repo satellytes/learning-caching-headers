@@ -23,7 +23,7 @@ export const handleRequest: APIGatewayProxyHandlerV2 = async (event) => {
    * https://stackoverflow.com/questions/7071763/max-value-for-cache-control-header-in-http
    */
   const browserCacheSeconds = 10;
-  const cdnCacheSeconds = 60;
+  const cdnCacheSeconds = 30;
   const cdnStaleCacheSeconds = 30;
 
   return {

@@ -19,6 +19,27 @@ package:
 resources:
   Description: "CloudFormation template for ${self:service}"
   Resources:
+    CloudFrontFunction:
+      Type: AWS::CloudFront::Function
+      Properties:
+        Name: DateHeaderSet
+        AutoPublish: true
+        FunctionCode: !Sub |
+          function handler(event) {
+            var response = event.response;
+            var headers = response.headers;
+          
+            headers['date'] = {
+              // https://stackoverflow.com/a/18324177/3141881
+              value: new Date().toUTCString()
+            };
+            delete headers['age'];
+          
+            return response;
+          }
+        FunctionConfig:
+          Comment: !Sub Append index.html to folder paths
+          Runtime: cloudfront-js-1.0
     CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -52,6 +73,9 @@ resources:
               - OPTIONS
             TargetOriginId: ApiGateway
             ViewerProtocolPolicy: redirect-to-https
+            FunctionAssociations:
+              - EventType: viewer-response
+                FunctionARN: !GetAtt CloudFrontFunction.FunctionMetadata.FunctionARN
           PriceClass: PriceClass_100
           CustomErrorResponses:
             - ErrorCode: 403
