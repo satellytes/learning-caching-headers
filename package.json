@@ -12,7 +12,7 @@
     "deploy:remove": "serverless remove",
     "deploy:info": "serverless info --verbose",
     "logs": "serverless logs --function hello --tail",
-    "invalidate:cdn": "aws cloudfront create-invalidation --distribution-id EGXZDT85IU9EY --paths \"/*\""
+    "invalidate:cdn": "aws cloudfront create-invalidation --distribution-id E7VBIQIQAQFKY --paths \"/*\""
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.89",

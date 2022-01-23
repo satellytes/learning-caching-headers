@@ -27,13 +27,12 @@ resources:
         FunctionCode: !Sub |
           function handler(event) {
             var response = event.response;
-            var headers = response.headers;
           
-            headers['date'] = {
+            response.headers['date'] = {
               // https://stackoverflow.com/a/18324177/3141881
               value: new Date().toUTCString()
             };
-            delete headers['age'];
+            delete response.headers['age'];
           
             return response;
           }
