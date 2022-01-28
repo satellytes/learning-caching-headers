@@ -8,7 +8,7 @@ const MAX_AGE_SECONDS = 10;
 const S_MAXAGE_SECONDS = 60;
 
 // cdn (after s-maxage) and browser stale (after max-age) cache
-const STALE_WHILE_REVALIDATE_SECONDS = 240;
+const STALE_WHILE_REVALIDATE_SECONDS = 60;
 
 /**
  * Takes the body as object and creates a string out of it.
@@ -32,7 +32,8 @@ const createEtag = (body: string) => {
 }
 
 export const handleRequest: APIGatewayProxyHandlerV2 = async (event) => {
-  console.log(`Received ${event.requestContext.http.method} request...`);
+  console.log(`Received ${event.requestContext.http.method} request`);
+  console.log(`Request headers: ${JSON.stringify(event.headers, null, 2)}`);
 
   const body = createBody({
     createdDate: new Date().toUTCString(),
