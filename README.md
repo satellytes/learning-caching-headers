@@ -1,6 +1,10 @@
-# Learning Caching Headers
+# Learning HTTP Caching Headers
 
-Learning `cache-control` headers with serverless, AWS Lambda and AWS Cloudfront.
+Learning `cache-control` and `etag` header with serverless, AWS Lambda, AWS Cloudfront and Fastly.
+
+- API: https://832ibzgi7l.execute-api.us-east-1.amazonaws.com/
+- CloudFront CDN: https://d2eritzsw5e2yi.cloudfront.net
+- Fastly CDN: http://832ibzgi7l.execute-api.us-east-1.amazonaws.com.global.prod.fastly.net/
 
 ## Usage
 
