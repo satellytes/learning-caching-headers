@@ -1,28 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <script>
-    const fetchData = () => {
-        fetch('https://d2eritzsw5e2yi.cloudfront.net')
-            .then(response => {
-                document.getElementById('cache-control-header').innerText = `Cache-Control Header: ${response.headers.get('cache-control')}`;
-                return response.json()})
-            .then(result => {
-                document.getElementById('date').innerText = `Origin date: ${result.createdDate}`;
+  const API_URL = 'https://d2eritzsw5e2yi.cloudfront.net';
+  const CDN_S_MAX_AGE = 60;
+  const CDN_STYLE_WHILE_REVALIDATE = 60;
 
-                const seconds = (new Date() - new Date(result.createdDate)) / 1000;
-                document.getElementById('seconds').innerText = `In CDN cache (s-maxage) since: ${seconds} sec.`;
-            });
+  let lastOriginDate = null;
+  let lastFetchDate = null;
+
+  const updateInformation = () => {
+    if (lastOriginDate) {
+      document.getElementById('origin-date').innerText = lastOriginDate;
+
+      const seconds = ((new Date() - new Date(lastOriginDate)) / 1000).toFixed();
+
+      const cacheState = seconds < CDN_S_MAX_AGE ?
+        'cached' : seconds < (CDN_S_MAX_AGE + CDN_STYLE_WHILE_REVALIDATE) ?
+          'cached-stale' : 'uncached';
+      document.getElementById('cdn-seconds').innerText = `In CDN cache (s-maxage) since: ${seconds} sec. (state: ${cacheState})`;
     }
+
+    if (lastFetchDate) {
+      document.getElementById('fetch-date').innerText = lastFetchDate;
+    }
+
+    document.getElementById('now-date').innerText = new Date().toUTCString();
+  }
+
+  setInterval(() => {
+    updateInformation();
+  }, 1000);
+
+  const fetchData = () => {
+    lastFetchDate = new Date().toUTCString();
+
+    fetch(API_URL)
+      .then(response => {
+        console.log(response);
+        document.getElementById('cache-control-header').innerText = `Cache-Control Header: ${response.headers.get('cache-control')}`;
+        return response.json()
+      })
+      .then(result => {
+        lastOriginDate = result.createdDate;
+        updateInformation();
+      });
+  }
 </script>
+<style>
+    body {
+        padding: 0 8px;
+    }
+
+    p {
+        margin: 0 0 32px 0;
+        padding: 0;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        margin-bottom: 8px;
+    }
+
+    td {
+        border: 1px solid #AAA;
+        text-align: left;
+        padding: 8px;
+    }
+
+    td:first-child {
+        width: 130px;
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Fetch from CloudFront</title>
 </head>
 <body>
 <h1>Fetch from CloudFront</h1>
-<p id ="cache-control-header">Cache-Control Header: -</p>
-<p id ="date">Origin date: -</p>
-<p id ="seconds">In CDN cache (s-maxage) since: -</p>
+<p id="cache-control-header">Cache-Control Header: -</p>
+<table>
+    <tr>
+        <td>
+            <div>Now date</div>
+        </td>
+        <td>
+            <div id="now-date">-</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>Origin date</div>
+        </td>
+        <td>
+            <div id="origin-date">-</div>
+        </td>
+    </tr>
+</table>
+<p id="cdn-seconds">In CDN cache (s-maxage) since: -</p>
+
+<table>
+    <tr>
+        <td>
+            <div>Last fetch date</div>
+        </td>
+        <td>
+            <div id="fetch-date">-</div>
+        </td>
+    </tr>
+</table>
+
+
 <button onclick="fetchData()">Fetch data</button>
 </body>
 </html>
