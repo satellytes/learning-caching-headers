@@ -37,7 +37,7 @@ resources:
             return response;
           }
         FunctionConfig:
-          Comment: !Sub Append index.html to folder paths
+          Comment: !Sub Update the date header
           Runtime: cloudfront-js-1.0
     CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
